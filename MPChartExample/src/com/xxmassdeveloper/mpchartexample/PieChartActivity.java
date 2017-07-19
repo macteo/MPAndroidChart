@@ -70,10 +70,10 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setHoleColor(Color.WHITE);
 
         mChart.setTransparentCircleColor(Color.WHITE);
-        mChart.setTransparentCircleAlpha(110);
+        mChart.setTransparentCircleAlpha(255);
 
         mChart.setHoleRadius(58f);
-        mChart.setTransparentCircleRadius(61f);
+        mChart.setTransparentCircleRadius(58f);
 
         mChart.setDrawCenterText(true);
 
@@ -214,9 +214,9 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         dataSet.setDrawIcons(false);
 
-        dataSet.setSliceSpace(3f);
+        dataSet.setSliceSpace(0f);
         dataSet.setIconsOffset(new MPPointF(0, 40));
-        dataSet.setSelectionShift(5f);
+        dataSet.setSelectionShift(0f);
 
         // add a lot of colors
 
@@ -241,6 +241,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         dataSet.setColors(colors);
         //dataSet.setSelectionShift(0f);
+        dataSet.setValueLineColor(ColorTemplate.PASTEL_COLORS[0]);
 
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());

@@ -2,6 +2,8 @@
 package com.github.mikephil.charting.renderer;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,6 +11,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Layout;
@@ -42,6 +45,7 @@ public class PieChartRenderer extends DataRenderer {
      * circle
      */
     protected Paint mHolePaint;
+    protected Paint mStrokePaint;
     protected Paint mTransparentCirclePaint;
     protected Paint mValueLinePaint;
 
@@ -76,6 +80,12 @@ public class PieChartRenderer extends DataRenderer {
         mHolePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mHolePaint.setColor(Color.WHITE);
         mHolePaint.setStyle(Style.FILL);
+
+        // MACTEO: configuring stroke
+        mStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mStrokePaint.setColor(Color.BLACK);
+        mStrokePaint.setStyle(Style.STROKE);
+        mStrokePaint.setStrokeWidth(Utils.convertDpToPixel(1.0f));
 
         mTransparentCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTransparentCirclePaint.setColor(Color.WHITE);
@@ -211,6 +221,8 @@ public class PieChartRenderer extends DataRenderer {
         return sliceSpace;
     }
 
+    private static byte [] PATTERN_BYTES = {};
+
     protected void drawDataSet(Canvas c, IPieDataSet dataSet) {
 
         float angle = 0;
@@ -254,6 +266,8 @@ public class PieChartRenderer extends DataRenderer {
 
                     final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
+                    // Bitmap bm = BitmapFactory.decodeByteArray(PATTERN_BYTES, 0, PATTERN_BYTES.length);
+                    // mRenderPaint.setShader(new BitmapShader(bm, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT));
                     mRenderPaint.setColor(dataSet.getColor(j));
 
                     final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
@@ -372,6 +386,7 @@ public class PieChartRenderer extends DataRenderer {
                     mPathBuffer.close();
 
                     mBitmapCanvas.drawPath(mPathBuffer, mRenderPaint);
+                    mBitmapCanvas.drawPath(mPathBuffer, mStrokePaint);
                 }
             }
 
@@ -650,7 +665,9 @@ public class PieChartRenderer extends DataRenderer {
         if (mChart.isDrawHoleEnabled() && mBitmapCanvas != null) {
 
             float radius = mChart.getRadius();
-            float holeRadius = radius * (mChart.getHoleRadius() / 100);
+            // MACTEO: subtracted the stroke value
+            float holeRadius = (radius - 1.0f) * (mChart.getHoleRadius() / 100);
+            // float holeRadius = radius * (mChart.getHoleRadius() / 100);
             MPPointF center = mChart.getCenterCircleBox();
 
             if (Color.alpha(mHolePaint.getColor()) > 0) {
