@@ -266,9 +266,18 @@ public class PieChartRenderer extends DataRenderer {
 
                     final boolean accountForSliceSpacing = sliceSpace > 0.f && sliceAngle <= 180.f;
 
-                    // Bitmap bm = BitmapFactory.decodeByteArray(PATTERN_BYTES, 0, PATTERN_BYTES.length);
-                    // mRenderPaint.setShader(new BitmapShader(bm, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT));
-                    mRenderPaint.setColor(dataSet.getColor(j));
+                    // TODO: replace this with the pattern image
+
+                    String hex = "89504e470d0a1a0a0000000d494844520000002d0000002d08060000003a1ae29a0000000467414d410000b18f0bfc6105000002ed494441545809ed99c972c230104465b11727b6ffff37ae6c278a1dc7cf95a184add82389a472b02e4e05343d6af5b4c6225bafd7f9603030abd5caf47a3da3198fc7c36c361b73bbddcc643231cbe55233adfccef57a35dbedd6102316d73211f0dd6e5706d2a0b3b8c56261fafdbe399d4e66bfdf9b3ccf3553cd70382c1799829bddeff79c842f978b198d4665325ac6592cac1531cc743a35b3d9cc6459a64a1ea66371adb046c2242e5ba741862da4418ce3f1680e8783665af99d145c4b0409c0d6a139b6fbf97caa12a8261e229558dcacd0e24b8c6c19a0e7f3f9cfa512825b322d94caca452a21c5298c539ca95269c37d4b9ae4adb56531ba89ff855442706b4993782ae378fe6f32fea6691276070cb355685cfc950569468a1db6e17a9996a4d8b2f97c5e1625aed2a63599c7d3a771a7e6ddafd6fe6ec36d4c9a6855a9fc071f6f4dda4dfcbff878798c6b75fa291fa7c9e2c88fc5b5d2add584e5f947552ab11aa7c94ac1b552e53c3523c44fabf1a43879a6e066c58a73568eafd2fc105033dc2e6d3c1e972e13b2dd3457b1b859e1893901387a0125710a4e33dafcb42906f6178b6be97ff162fa61d8c3d242a4c25c7195108d27e10a1b54734ce2b23b6eafc2e2b52306f7e5d3ac5c02f02612c2b8b80a8cf32211d28fc7e07a7b0f40d1784c7186f4c5d5ddd0e2be987603b88ca7f86988c6c1d7e27a934e2a92847e5c8beb4d5a5877571ea3f1d4e2fca9b6bc9a96a479a6f8e96ff97823d324addd32be5b1dd2177fdac75b9996445cc6635c85a28cb910f2e16645a05c7b6cfb02c4f42acc91935448697a56712d05c6ab94668854e8872992104b9303c8edf06271ad34f6a147af80875e85c1300b48c1ed6e4df17524a419301d5b9cddad294d164d0fd5ae19529ce2e3cce5406a1b6f3e2dc5d1dd9ab6d1567c2e8c6b7b95da31fe89b76d9208954a086e2d6988095db94b26fedddd9a7eff1a069132bc4cbf3eec6e4d3ff7eb5723d3c2b8683cd44f998fc6dd9fed3ee1e3ddada9ec8cef298cf302917a6bfa059377c9db21eb6eac0000000049454e44ae426082";
+                    byte [] input = new byte[hex.length()/2];
+                    for(int i = 0; i < input.length; i++) {
+                        input[i] = (byte) Integer.parseInt(hex.substring(i * 2, i * 2 + 1), 16);
+                        input[i] = (byte) ((input[i] << 4) | Integer.parseInt(hex.substring(i * 2 + 1, i * 2 + 2), 16));
+                    }
+                    Bitmap decoded = BitmapFactory.decodeByteArray(input, 0, input.length);
+
+                    mRenderPaint.setShader(new BitmapShader(decoded, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT));
+                    // mRenderPaint.setColor(dataSet.getColor(j));
 
                     final float sliceSpaceAngleOuter = visibleAngleCount == 1 ?
                             0.f :

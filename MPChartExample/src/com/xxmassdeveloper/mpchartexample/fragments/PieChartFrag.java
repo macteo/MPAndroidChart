@@ -27,7 +27,8 @@ public class PieChartFrag extends SimpleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_simple_pie, container, false);
-        
+        v.setBackgroundColor(Color.WHITE);
+
         mChart = (PieChart) v.findViewById(R.id.pieChart1);
         mChart.getDescription().setEnabled(false);
         
@@ -49,7 +50,7 @@ public class PieChartFrag extends SimpleFragment {
         l.setDrawInside(false);
         
         mChart.setData(generatePieData());
-        
+
         return v;
     }
 

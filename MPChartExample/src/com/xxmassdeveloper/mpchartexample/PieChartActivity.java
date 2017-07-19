@@ -109,6 +109,7 @@ public class PieChartActivity extends DemoBase implements OnSeekBarChangeListene
         mChart.setEntryLabelColor(Color.WHITE);
         mChart.setEntryLabelTypeface(mTfRegular);
         mChart.setEntryLabelTextSize(12f);
+        mChart.setBackgroundColor(Color.WHITE);
     }
 
     @Override
